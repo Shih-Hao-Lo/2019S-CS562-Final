@@ -30,7 +30,7 @@ public class phi {
 	public void addtophi(String action , String data) {
 		switch(action.toLowerCase()) {
 		case "s":
-			S.addAll(Arrays.asList(data.split(", ")));
+			S.addAll(Arrays.asList(removespace(data).split(",")));
 			//System.out.println(S.toString());
 			break;
 		case "t":
