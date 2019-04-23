@@ -1,0 +1,180 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x0000000069701958, pid=908, tid=1352
+#
+# JRE version:  (10.0.2+13) (build )
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (10.0.2+13, mixed mode, aot, tiered, compressed oops, g1 gc, windows-amd64)
+# Problematic frame:
+# V  [jvm.dll+0x1c1958]
+#
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Dfile.encoding=MS950 output
+
+Host: Intel(R) Core(TM) i7-6500U CPU @ 2.50GHz, 4 cores, 7G,  Windows 10 , 64 bit Build 17763 (10.0.17763.437)
+Time: Tue Apr 16 20:59:07 2019 ?u¢D[aF3!?e¢Du¡M`?uRE?! elapsed time: 0 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00000236a8466800):  JavaThread "Unknown thread" [_thread_in_vm, id=1352, stack(0x000000fddcc00000,0x000000fddcd00000)]
+
+Stack: [0x000000fddcc00000,0x000000fddcd00000],  sp=0x000000fddccff1d0,  free space=1020k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x1c1958]
+V  [jvm.dll+0x1bfe43]
+V  [jvm.dll+0x3519cb]
+V  [jvm.dll+0x6856a2]
+V  [jvm.dll+0x3ba0c3]
+V  [jvm.dll+0x3bc261]
+C  [javaw.exe+0x3541]
+C  [javaw.exe+0xe1cf]
+C  [javaw.exe+0xe376]
+C  [KERNEL32.DLL+0x17974]
+C  [ntdll.dll+0x6a271]
+
+
+siginfo: EXCEPTION_ACCESS_VIOLATION (0xc0000005), reading address 0x0000000000000000
+
+
+Registers:
+RAX=0x00005027014e6eec, RBX=0x0000000000000000, RCX=0x0000000000000000, RDX=0x0000000000000000
+RSP=0x000000fddccff1d0, RBP=0x0000000000000000, RSI=0x00000236a8466800, RDI=0x0000000000000000
+R8 =0x0000000000000006, R9 =0x00007ff851244b18, R10=0x0000000000000006, R11=0x000000fddccfea50
+R12=0x0000000000000000, R13=0x0000000069a92ab0, R14=0x000000fddccff628, R15=0x00000236a827b538
+RIP=0x0000000069701958, EFLAGS=0x0000000000010256
+
+Top of Stack: (sp=0x000000fddccff1d0)
+0x000000fddccff1d0:   0000000069ce1658 0000000069ab5c2d
+0x000000fddccff1e0:   0000000069d493c0 0000000069ce1658
+0x000000fddccff1f0:   0000000000000040 000000fddccff250
+0x000000fddccff200:   00000236a8464820 0000000069ab6075
+0x000000fddccff210:   00000236a8466800 0000000000000000
+0x000000fddccff220:   0000000000000000 0000000069ab5957
+0x000000fddccff230:   0000000000000000 0000000069b06f79
+0x000000fddccff240:   00000236a8464820 0000000000000000
+0x000000fddccff250:   0000000000000000 0000000000000000
+0x000000fddccff260:   0000000000000004 0000000069b075d8
+0x000000fddccff270:   00000236a8464820 00005027014e6eec
+0x000000fddccff280:   0000000000000004 0000000000000000
+0x000000fddccff290:   0000000069a92ab0 00000236a8466800
+0x000000fddccff2a0:   000000fddccff2e0 00000000696ffe43
+0x000000fddccff2b0:   0000000000000000 000000fddccff2e0
+0x000000fddccff2c0:   0000000000000000 0000000000000000 
+
+Instructions: (pc=0x0000000069701958)
+0x0000000069701938:   c0 00 00 00 48 8b 05 6d 1d 7a 00 48 33 c4 48 89
+0x0000000069701948:   84 24 a8 00 00 00 48 8b e9 48 83 ca ff 48 ff c2
+0x0000000069701958:   80 3c 0a 00 75 f7 33 f6 45 33 ed c6 44 24 30 01
+0x0000000069701968:   85 d2 0f 8e 54 02 00 00 8b 0d e6 6d 81 00 65 48 
+
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00000236a829c530, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+[error occurred during error reporting (printing all threads), id 0xc0000005]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+
+[error occurred during error reporting (printing compressed oops mode), id 0xc0000005]
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+0x00007ff6fa730000 - 0x00007ff6fa76e000 	C:\Program Files\Java\jre-10.0.2\bin\javaw.exe
+0x00007ff859020000 - 0x00007ff85920d000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ff856470000 - 0x00007ff856523000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ff855700000 - 0x00007ff855993000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ff8562b0000 - 0x00007ff856353000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ff856370000 - 0x00007ff85640e000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ff856c40000 - 0x00007ff856cde000 	C:\WINDOWS\System32\sechost.dll
+0x00007ff858af0000 - 0x00007ff858c12000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ff856e30000 - 0x00007ff856fc7000 	C:\WINDOWS\System32\USER32.dll
+0x00007ff855470000 - 0x00007ff855490000 	C:\WINDOWS\System32\win32u.dll
+0x00007ff858c90000 - 0x00007ff858cb9000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ff8550f0000 - 0x00007ff85528a000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ff855490000 - 0x00007ff855530000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ff855580000 - 0x00007ff85567a000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ff843e20000 - 0x00007ff844099000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.17763.437_none_05b63dca071e5dd6\COMCTL32.dll
+0x00007ff849da0000 - 0x00007ff849daa000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ff858cc0000 - 0x00007ff858fec000 	C:\WINDOWS\System32\combase.dll
+0x00007ff8561d0000 - 0x00007ff85624e000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ff856ce0000 - 0x00007ff856d0e000 	C:\WINDOWS\System32\IMM32.DLL
+0x00007ff851290000 - 0x00007ff85137f000 	C:\Program Files\Java\jre-10.0.2\bin\msvcr120.dll
+0x00007ff84f060000 - 0x00007ff84f106000 	C:\Program Files\Java\jre-10.0.2\bin\msvcp120.dll
+0x0000000069540000 - 0x0000000069fb0000 	C:\Program Files\Java\jre-10.0.2\bin\server\jvm.dll
+0x00007ff858710000 - 0x00007ff858718000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007ff853bf0000 - 0x00007ff853bf9000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ff852d30000 - 0x00007ff852d54000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ff858c20000 - 0x00007ff858c8d000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ff852d00000 - 0x00007ff852d2d000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x00007ff855530000 - 0x00007ff85557a000 	C:\WINDOWS\System32\cfgmgr32.dll
+0x00007ff851280000 - 0x00007ff85128f000 	C:\Program Files\Java\jre-10.0.2\bin\verify.dll
+0x00007ff8539d0000 - 0x00007ff853bbd000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ff846130000 - 0x00007ff84615a000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x00007ff851250000 - 0x00007ff851277000 	C:\Program Files\Java\jre-10.0.2\bin\java.dll
+0x00007ff850320000 - 0x00007ff850336000 	C:\Program Files\Java\jre-10.0.2\bin\zip.dll
+0x00007ff851240000 - 0x00007ff85124a000 	C:\Program Files\Java\jre-10.0.2\bin\jimage.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Program Files\Java\jre-10.0.2\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.17763.437_none_05b63dca071e5dd6;C:\Program Files\Java\jre-10.0.2\bin\server
+
+VM Arguments:
+jvm_args: -Dfile.encoding=MS950 
+java_command: output
+java_class_path (initial): C:\Users\howar\Desktop\eclipse-workspace\CS562-project\bin;C:\Program Files (x86)\PostgreSQL\pgJDBC\postgresql-42.2.2.jar
+Launcher Type: SUN_STANDARD
+
+Logging:
+Log output configuration:
+#0: stdout all=warning uptime,level,tags
+#1: stderr all=off uptime,level,tags
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk-10.0.2
+PATH=C:/Program Files/Java/jre1.8.0_191/bin/server;C:/Program Files/Java/jre1.8.0_191/bin;C:/Program Files/Java/jre1.8.0_191/lib/amd64;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Java\jdk-10.0.2\bin;C:\Program Files\Git\cmd;C:\PostgreSQL\pg10\bin;C:\Program Files\nodejs\;C:\Users\howar\AppData\Local\Microsoft\WindowsApps;C:\Users\howar\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\howar\AppData\Local\GitHubDesktop\bin;C:\Users\howar\AppData\Roaming\npm;%USERPROFILE%\AppData\Local\Microsoft\WindowsApps;;C:\Users\howar\Downloads\eclipse-java-photon-R-win32-x86_64\eclipse;
+USERNAME=howar
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 78 Stepping 3, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10 , 64 bit Build 17763 (10.0.17763.437)
+
+CPU:total 4 (initial active 4) 
+
+Memory: 4k page, physical 8288604k(3995292k free), swap 19298652k(14438232k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (10.0.2+13) for windows-amd64 JRE (10.0.2+13), built on Jun 28 2018 01:57:56 by "mach5one" with MS VC++ 12.0 (VS2013)
+
+END.

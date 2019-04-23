@@ -1,31 +1,57 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import datastructure.phi;
+import transfer.esqltophi;
 
 public class input {
     public static PrintWriter writer;
 
-	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void main(String[] args) throws IOException {
 		writer = new PrintWriter("src/output.java", "UTF-8");
+		
+		phi phidata = esqltophi.fromfile();
+		//phidata.printphi();
+		ArrayList<String> st = new ArrayList<>();
+		ArrayList<String> exp = new ArrayList<>();
+		ArrayList<String> res = new ArrayList<>();
+		exp.add("String[] keys = {resultSet.getString(1)};");
+		for(int x = 0 ; x < phidata.n ; x++) {
+			  int len = 0;
+			  while(phidata.theta.get(x).charAt(len) != '.') {
+				  len++;
+			  }
+			  String name = phidata.theta.get(x).substring(0, len);
+			  st.add("aggregates " + name + " = new aggregates();");
+			  while(phidata.theta.get(x).charAt(len) != '=') {
+				  len++;
+			  }
+			  String condition = phidata.theta.get(x).substring(len+1, phidata.theta.get(x).length());
+			  String[] expression  = {"if(resultSet.getString(6).equals(" + condition +")){" , name + ".update(resultSet.getInt(7) , keys);" , "}"};
+			  exp.addAll(Arrays.asList(expression));
+			  String print =  name+".printresult();";
+			  res.add(print);
+		}
 		
 		before();
 		//addstatment("System.out.println(\"Hello World!\");");
 		addquery("select * from sales");
 		printattribute();
-		addstatment("int cnt = 0;");
-		String[] data = {"for(int i = 1; i <= columnsNumber; i++){" , "System.out.printf(\"%-30.30s\" , resultSet.getString(i));" , "}" , "System.out.println();"};
-		addwhile("resultSet.next() && cnt++<=30" , "" , data);
-		addhashmap("minmap");
-		addstatment("ArrayList<String> a = new ArrayList<>();");
-		addstatment("a.add(\"Hello\");");
-		addstatment("a.add(\"World\");");
-		existedmap("minmap" , "a" , "1" , "put");
-		String[] data2 = {"System.out.println(key + \" \" + value);"};
-		traviseHashMap("minmap", data2);
+		//String[] data = {"for(int i = 1; i <= columnsNumber; i++){" , "System.out.printf(\"%-30.30s\" , resultSet.getString(i));" , "}" , "System.out.println();"};
+		for(int x = 0 ; x < st.size() ; x++) {
+			addstatment(st.get(x));
+		}
+		addwhile("resultSet.next()" , "" , exp);
+		for(int x = 0 ; x < res.size() ; x++) {
+			addstatment(res.get(x));
+		}
 		after();
 		
 //        try {
@@ -46,6 +72,7 @@ public class input {
 		writer.println("import java.sql.Statement;");
 		writer.println("import java.util.HashMap;");
 		writer.println("import java.util.ArrayList;");
+		writer.println("import datastructure.aggregates;");
         writer.println("public class output{");
         writer.println("public static void main(String[] args){");
         writer.println("try{");
@@ -56,7 +83,6 @@ public class input {
     public static void after(){
     	writer.println("}");
     	writer.println("catch (SQLException | ClassNotFoundException e) {");
-    	//writer.println("catch (SQLException e) {");
     	writer.println("System.out.println(\"Connection failure.\");");
     	writer.println("e.printStackTrace();");
     	writer.println("}");
@@ -75,10 +101,10 @@ public class input {
     	writer.println("int columnsNumber = rsmd.getColumnCount();");
     }
     
-    public static void addwhile(String loopcounter , String counterchange , String[] exec) {
+    public static void addwhile(String loopcounter , String counterchange , ArrayList<String> exec) {
     	writer.println("while("+loopcounter+"){");
-    	for(int x = 0 ; x < exec.length ; x++) {
-    		writer.println(exec[x]);
+    	for(int x = 0 ; x < exec.size() ; x++) {
+    		writer.println(exec.get(x));
     	}
     	writer.println(counterchange);
     	writer.println("}");
