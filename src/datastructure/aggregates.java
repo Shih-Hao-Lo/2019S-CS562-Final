@@ -11,80 +11,80 @@ public class aggregates {
 
 	}
 	
-	public static HashSet<String> g_attributes;
-	public static HashMap<HashSet<String> , Integer> max;
-	public static HashMap<HashSet<String> , Integer> min;
-	public static HashMap<HashSet<String> , Integer> sum;
-	public static HashMap<HashSet<String> , Float> avg;
-	public static HashMap<HashSet<String> , Integer> count;
+	public HashSet<String> g_attributes;
+	public HashMap<HashSet<String> , Integer> max;
+	public HashMap<HashSet<String> , Integer> min;
+	public HashMap<HashSet<String> , Integer> sum;
+	public HashMap<HashSet<String> , Float> avg;
+	public HashMap<HashSet<String> , Integer> count;
 	
 	public aggregates() {
-		g_attributes = new HashSet<>();
-		max = new HashMap<>();
-		min = new HashMap<>();
-		sum = new HashMap<>();
-		avg = new HashMap<>();
-		count = new HashMap<>();
+		this.g_attributes = new HashSet<>();
+		this.max = new HashMap<>();
+		this.min = new HashMap<>();
+		this.sum = new HashMap<>();
+		this.avg = new HashMap<>();
+		this.count = new HashMap<>();
 	}
 	
 	public void update(int data , String[] keys) {
 		HashSet<String> key = new HashSet<>();
 		key.addAll(Arrays.asList(keys));
 		//max
-		if(!max.containsKey(key)) {
-			max.put(key, data);
+		if(!this.max.containsKey(key)) {
+			this.max.put(key, data);
 		}
 		else {
-			int curmax = max.get(key);
+			int curmax = this.max.get(key);
 			if(data > curmax) {
-				max.replace(key, data);
+				this.max.replace(key, data);
 			}
 		}
 		//min
-		if(!min.containsKey(key)) {
-			min.put(key, data);
+		if(!this.min.containsKey(key)) {
+			this.min.put(key, data);
 		}
 		else {
-			int curmin = min.get(key);
+			int curmin = this.min.get(key);
 			if(data < curmin) {
-				min.replace(key, data);
+				this.min.replace(key, data);
 			}
 		}
 		//sum
-		if(!sum.containsKey(key)) {
-			sum.put(key, data);
+		if(!this.sum.containsKey(key)) {
+			this.sum.put(key, data);
 		}
 		else {
-			int cursum = sum.get(key);
-			sum.replace(key, cursum+data);
+			int cursum = this.sum.get(key);
+			this.sum.replace(key, cursum+data);
 		}
 		//count
-		if(!count.containsKey(key)) {
-			count.put(key, 1);
+		if(!this.count.containsKey(key)) {
+			this.count.put(key, 1);
 		}
 		else {
-			int curcount = count.get(key);
-			count.replace(key, curcount+1);
+			int curcount = this.count.get(key);
+			this.count.replace(key, curcount+1);
 		}
 		//avg
-		if(!avg.containsKey(key)) {
-			avg.put(key, (float) data);
+		if(!this.avg.containsKey(key)) {
+			this.avg.put(key, (float) data);
 		}
 		else {
-			float curavg = sum.get(key);
-			int curcnt = count.get(key);
-			avg.replace(key, (curavg+data)/curcnt);
+			float curavg = this.sum.get(key);
+			int curcnt = this.count.get(key);
+			this.avg.replace(key, (curavg+data)/curcnt);
 		}
 	}
 	public void printresult() {
-		System.out.println("\n\nin printresult");
-		for(HashSet<String> k: avg.keySet()) {
+		System.out.println("in printresult");
+		for(HashSet<String> k: this.avg.keySet()) {
 			System.out.println("\nkey" + k.toString());
-			System.out.print("max:" + max.get(k));
-			System.out.print("|min:" + min.get(k));
-			System.out.print("|avg:" + avg.get(k));
-			System.out.print("|sum:" + sum.get(k));
-			System.out.print("|count:" + count.get(k));
+			System.out.print("max:" + this.max.get(k));
+			System.out.print("|min:" + this.min.get(k));
+			System.out.print("|avg:" + this.avg.get(k));
+			System.out.print("|sum:" + this.sum.get(k));
+			System.out.print("|count:" + this.count.get(k) + "\n");
 		}
 	}
 }

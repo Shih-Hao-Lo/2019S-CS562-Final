@@ -11,12 +11,12 @@ public class phi {
 
 	}
 	
-	public static ArrayList<String> S; //Select clause
-	public static int n; //Number of grouping variables
-	public static HashSet<String> F; //aggregate
-	public static ArrayList<String> theta; //such that clause
-	public static String G; //having clause
-	public static ArrayList<String> V; //List of grouping attributes
+	public ArrayList<String> S; //Select clause
+	public int n; //Number of grouping variables
+	public HashSet<String> F; //aggregate
+	public ArrayList<String> theta; //such that clause
+	public String G; //having clause
+	public ArrayList<String> V; //List of grouping attributes
 	
 	public phi() {
 		S = new ArrayList<>();
