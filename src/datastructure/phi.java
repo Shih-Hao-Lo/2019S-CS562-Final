@@ -34,7 +34,7 @@ public class phi {
 			//System.out.println(S.toString());
 			break;
 		case "t":
-			theta.addAll(Arrays.asList(removespace(data).split("and")));
+			theta.addAll(Arrays.asList(removespace(data).split(",")));
 			//System.out.println(theta.toString());
 			break;
 		case "g":

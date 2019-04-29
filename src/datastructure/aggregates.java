@@ -73,7 +73,7 @@ public class aggregates {
 		else {
 			float curavg = this.sum.get(key);
 			int curcnt = this.count.get(key);
-			this.avg.replace(key, (curavg+data)/curcnt);
+			this.avg.replace(key, curavg/curcnt);
 		}
 	}
 	public void printresult() {

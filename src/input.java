@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,7 +22,7 @@ public class input {
 		
 		phi phidata = esqltophi.fromfile();
 		//phidata.printphi();
-		System.out.println(processhaving(phidata.G));
+		//System.out.println(processhaving(phidata.G));
 		ArrayList<String> st = new ArrayList<>();
 		ArrayList<String> exp = new ArrayList<>();
 		ArrayList<String> res = new ArrayList<>();
@@ -50,6 +52,8 @@ public class input {
 			  //System.out.println(Label.substring(0, Label.length()-1));
 			  Label = Label.substring(0, Label.length()-1);
 			  String condition = phidata.theta.get(x).substring(len+1, phidata.theta.get(x).length());
+			  if(condition.charAt(0) != '\"') condition = '\"' + condition;
+			  if(condition.charAt(condition.length()-1) != '\"') condition = condition + '\"';
 			  String[] expression  = {"if(resultSet.getString(\""+ Label +"\").equals(" + condition +")){" , name + ".update(resultSet.getInt(\""+ Label2 +"\") , keys);" , "}"};
 			  exp.addAll(Arrays.asList(expression));
 			  String print =  name+".printresult();";
@@ -72,8 +76,8 @@ public class input {
 		}
 		addstatment("for(HashSet<String> k: globalkey) {");
 		addstatment(processhaving(phidata.G));
-		addstatment("System.out.println(k.toString() + \" should output!\");");
-		addstatment("}");
+		addstatment("System.out.println(k.toString() + \" should output!\");");//project part
+		if(phidata.G.length() != 0) addstatment("}");
 		addstatment("}");
 		after();
 		
@@ -97,14 +101,14 @@ public class input {
 		writer.println("import java.util.ArrayList;");
 		writer.println("import java.util.HashSet;");
 		writer.println("import java.util.Arrays;");
-		writer.println("import datastructure.aggregates;");
+		writer.println("import datastructure.*;");
         writer.println("public class output{");
         writer.println("public static HashSet<HashSet<String>> globalkey;");
         writer.println("public static void main(String[] args){");
         writer.println("try{");
         writer.println("Class.forName(\"org.postgresql.Driver\");");
         writer.println("Connection connection = DriverManager.getConnection(\"jdbc:postgresql://localhost:5432/postgres\", \"postgres\", \"postgres\");");
-        writer.println("Statement statement = connection.createStatement();");
+        writer.println("Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);");
 	}
     public static void after(){
     	writer.println("}");
@@ -128,12 +132,12 @@ public class input {
     }
     
     public static void addwhile(String loopcounter , String counterchange , ArrayList<String> exec) {
-    	writer.println("while("+loopcounter+"){");
+    	writer.println("do {");
     	for(int x = 0 ; x < exec.size() ; x++) {
     		writer.println(exec.get(x));
     	}
     	writer.println(counterchange);
-    	writer.println("}");
+    	writer.println("}while(\"+loopcounter+\");");
     }
     
     public static void addfor(String startcondition , String endcondition , String counterchange , String[] exec) {
@@ -181,6 +185,7 @@ public class input {
     }
     
     public static String processhaving(String G) {
+    	if(G.length() == 0) return "";
     	String out = "if(";
     	String in = removestr(G);
     	String[] expression = split2(in);
@@ -194,9 +199,9 @@ public class input {
     		cond = expression[x].charAt(len);
     		String first = expression[x].substring(0, len);
     		String second = expression[x].substring(len+1, expression[x].length());
-    		System.out.println(first);
-    		System.out.println(second);
-    		System.out.println(cond);
+    		//System.out.println(first);
+    		//System.out.println(second);
+    		//System.out.println(cond);
     		//process first argument
     		String hold = "";
     		if(first.charAt(0) != 's' && first.charAt(0) != 'c' && first.charAt(0) != 'm' && first.charAt(0) != 'a') {
@@ -209,8 +214,8 @@ public class input {
     			hold = first.substring(0, len+1);
     			first = first.substring(len+1, first.length());
     		}
-    		System.out.println(hold);
-    		System.out.println(first);
+    		//System.out.println(hold);
+    		//System.out.println(first);
     		out += hold;
     		len = 0;
     		while(first.charAt(len) != '(') {
@@ -223,7 +228,7 @@ public class input {
     			len++;
     		}
     		String name = first.substring(0, len);
-    		System.out.println(name);
+    		//System.out.println(name);
     		out = out + name + "." + tag + ".get(k)" + cond;
     		//process second argument
     		hold = "";
@@ -237,8 +242,8 @@ public class input {
     			hold = second.substring(0, len+1);
     			second = second.substring(len+1, second.length());
     		}
-    		System.out.println(hold);
-    		System.out.println(second);
+    		//System.out.println(hold);
+    		//System.out.println(second);
     		out += hold;
     		len = 0;
     		while(second.charAt(len) != '(') {
@@ -251,7 +256,7 @@ public class input {
     			len++;
     		}
     		name = second.substring(0, len);
-    		System.out.println(name);
+    		//System.out.println(name);
     		out = out + name + "." + tag+".get(k)"; 
     		if(x < comprator.length) {
     			out += comprator[x];

@@ -8,14 +8,14 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Arrays;
-import datastructure.aggregates;
+import datastructure.*;
 public class output{
 public static HashSet<HashSet<String>> globalkey;
 public static void main(String[] args){
 try{
 Class.forName("org.postgresql.Driver");
 Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres");
-Statement statement = connection.createStatement();
+Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 ResultSet resultSet = statement.executeQuery("select * from sales");
 ResultSetMetaData rsmd = resultSet.getMetaData();
 int columnsNumber = rsmd.getColumnCount();

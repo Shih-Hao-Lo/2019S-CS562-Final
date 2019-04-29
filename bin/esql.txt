@@ -1,5 +1,5 @@
 select cust, sum(x.quant), sum(y.quant), sum(z.quant)
 from sales
 Group by cust: x, y, z
-such that x.state = 'NY' and y.state = 'NJ' and z.state = 'CT'
-having sum(x.quant) > 2 * sum(y.quant) or avg(x.quant) > count(z.quant);
+such that x.state = "NY" , y.state = "NJ" , z.state = "CT" 
+having 2+sum(x.quant) > sum(y.quant) and avg(x.quant) > avg(z.quant)

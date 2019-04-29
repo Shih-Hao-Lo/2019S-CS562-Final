@@ -48,7 +48,7 @@ public class esqltophi {
 				  System.out.println("group1:"+tmp[1].substring(3, tmp[1].length()));
 				  break;
 			  case"such":
-				  output.addtophi("t", tmp[1].substring(5, tmp[1].length()-1));
+				  output.addtophi("t", tmp[1].substring(5, tmp[1].length()));
 				  System.out.println("sucht0:"+tmp[0]);
 				  System.out.println("sucht1:"+tmp[1].substring(5, tmp[1].length()));
 				  break;
