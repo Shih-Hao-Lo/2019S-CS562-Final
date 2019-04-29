@@ -30,7 +30,8 @@ public class aggregates2 {
 		for(int x = 0 ; x < group.size() ; x++) {
 			g_attri.add(group.get(x));
 		}
-		do {
+		System.out.println(r.isBeforeFirst());
+		while(r.next()){
 			ArrayList<String> tmp = new ArrayList<>();
 			for(int x = 0 ; x < group.size() ; x++) {
 				tmp.add(r.getString(group.get(x)));
@@ -40,7 +41,7 @@ public class aggregates2 {
 			this.sum.put(tmp, null);
 			this.avg.put(tmp, null);
 			this.count.put(tmp, null);
-		}while(r.next());
+		}
 		r.first();
 	}
 	

@@ -27,7 +27,7 @@ globalkey = new HashSet<>();
 aggregates x = new aggregates();
 aggregates y = new aggregates();
 aggregates z = new aggregates();
-while(resultSet.next()){
+while(resultSet.next()) {
 String[] keys = {resultSet.getString(1)};
 HashSet<String> tmpset = new HashSet<>();
 tmpset.addAll(Arrays.asList(keys));

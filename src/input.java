@@ -132,12 +132,12 @@ public class input {
     }
     
     public static void addwhile(String loopcounter , String counterchange , ArrayList<String> exec) {
-    	writer.println("do {");
+    	writer.println("while("+loopcounter+") {");
     	for(int x = 0 ; x < exec.size() ; x++) {
     		writer.println(exec.get(x));
     	}
     	writer.println(counterchange);
-    	writer.println("}while(\"+loopcounter+\");");
+    	writer.println("}");
     }
     
     public static void addfor(String startcondition , String endcondition , String counterchange , String[] exec) {
