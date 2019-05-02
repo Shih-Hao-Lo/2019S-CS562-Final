@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 import datastructure.aggregates;
@@ -10,7 +13,13 @@ public class test {
 		String[] a = {"a"};
 		String[] b = {"b"};
 		String[] c = {"c"};
-
+		ArrayList<String> asf = new ArrayList<>();
+		asf.add("a");
+		asf.add("c");
+		asf.add("z");
+		asf.add("b");
+		Collections.sort(asf);
+		System.out.println(asf.toString());
 		ag.update(2, a);
 		ag.update(7, b);
 		ag.update(8, c);

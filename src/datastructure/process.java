@@ -16,9 +16,9 @@ public class process {
         int columnsNumber = rsmd.getColumnCount();
 		ArrayList<String> gb = new ArrayList<>();
 		gb.add("cust");
-		//gb.add("prod");
+		//gb.add("month");
 		dic.add("cust");
-		//dic.add("prod");
+		//dic.add("month");
 		aggregates2 a = new aggregates2(resultSet , gb);
 		int cnt = 0;
 
@@ -27,7 +27,7 @@ public class process {
 	}
 	
 	public static aggregates2 processbool(aggregates2 in , ResultSet result , ArrayList<String> group , String suchthat) throws SQLException {
-		 do{
+		while(result.next()){
 			ArrayList<String> k = new ArrayList<>();
 			for(int x = 0 ; x < group.size() ; x++) {
 				k.add(result.getString(group.get(x)));
@@ -35,7 +35,8 @@ public class process {
 			if(evaluate(result , suchthat , k , in)) {
 				in.update(result.getInt("quant"), toStrarr(k));
 			}
-		}while(result.next());
+		}
+		result.beforeFirst();
 		return in;
 	}
 	
@@ -67,16 +68,26 @@ public class process {
 				len++;
 			}
 			String p1,p2;
-			char op;
-			if(expression.get(x).charAt(len) == '!') {
+			String op;
+			if(expression.get(x).charAt(len) == '!' && expression.get(x).charAt(len+1) == '=') {
 				p1 = expression.get(x).substring(0, len);
 				p2 = expression.get(x).substring(len+2, expression.get(x).length());
-				op = '!';
+				op = "!=";
+			}
+			else if(expression.get(x).charAt(len) == '>' && expression.get(x).charAt(len+1) == '=') {
+				p1 = expression.get(x).substring(0, len);
+				p2 = expression.get(x).substring(len+2, expression.get(x).length());
+				op = ">=";
+			}
+			else if(expression.get(x).charAt(len) == '<' && expression.get(x).charAt(len+1) == '=') {
+				p1 = expression.get(x).substring(0, len);
+				p2 = expression.get(x).substring(len+2, expression.get(x).length());
+				op = "<=";
 			}
 			else {
 				p1 = expression.get(x).substring(0, len);
 				p2 = expression.get(x).substring(len+1, expression.get(x).length()); 
-				op = expression.get(x).charAt(len);
+				op = Character.toString(expression.get(x).charAt(len));
 			}
 			//System.out.println(p1);
 			//System.out.println(op);
@@ -92,16 +103,22 @@ public class process {
 			if(p2.charAt(0) != '\"') {
 				if(isnumber(p2)) {
 					switch(op) {
-					case '>':
+					case ">":
 						curbool = result.getInt(p1) > Integer.parseInt(p2);
 						break;
-					case '<':
+					case ">=":
+						curbool = result.getInt(p1) > Integer.parseInt(p2);
+						break;
+					case "<":
 						curbool = result.getInt(p1) < Integer.parseInt(p2);
 						break;
-					case '=':
+					case "<=":
+						curbool = result.getInt(p1) < Integer.parseInt(p2);
+						break;
+					case "=":
 						curbool = result.getInt(p1) == Integer.parseInt(p2);
 						break;
-					case '!':
+					case "!=":
 						curbool = result.getInt(p1) != Integer.parseInt(p2);
 						break;
 					}
@@ -110,51 +127,71 @@ public class process {
 				}
 				else {
 					String dat = result.getString(p2);
-					if(isnumber(dat)) {
+//					if(isnumber(dat)) {
+//						switch(op) {
+//						case ">":
+//							curbool = result.getInt(p1) > Integer.parseInt(dat);
+//							break;
+//						case ">=":
+//							curbool = result.getInt(p1) >= Integer.parseInt(dat);
+//							break;
+//						case "<":
+//							curbool = result.getInt(p1) < Integer.parseInt(dat);
+//							break;
+//						case "<=":
+//							curbool = result.getInt(p1) < Integer.parseInt(dat);
+//							break;
+//						case "=":
+//							curbool = result.getInt(p1) == Integer.parseInt(dat);
+//							break;
+//						case "!=":
+//							curbool = result.getInt(p1) != Integer.parseInt(dat);
+//							break;
+//						}
+//						//System.out.print(result.getInt(p1)+"|"+Integer.parseInt(dat)+":");
+//						//System.out.println(curbool);
+//					}
+//					else {
 						switch(op) {
-						case '>':
-							curbool = result.getInt(p1) > Integer.parseInt(dat);
-							break;
-						case '<':
-							curbool = result.getInt(p1) < Integer.parseInt(dat);
-							break;
-						case '=':
-							curbool = result.getInt(p1) == Integer.parseInt(dat);
-							break;
-						case '!':
-							curbool = result.getInt(p1) != Integer.parseInt(dat);
-							break;
-						}
-						//System.out.print(result.getInt(p1)+"|"+Integer.parseInt(dat)+":");
-						//System.out.println(curbool);
-					}
-					else {
-						switch(op) {
-						case '=':
+						case "=":
 							curbool = result.getString(p1).equals(key.get(mapdic(p2)));
 							//System.out.print(result.getString(p1)+"|"+key.get(mapdic(p2))+":");
 							//System.out.println(curbool);
 							break;
-						case '!':
-							//Here
-							//curbool = !(result.getString(p1).equals(key.get(mapdic(p2))));
-							in.addtomap(result, p2, result.getString(p1));
+						case "!=":
+							in.addtomap(result, p2, result.getString(p1) , "!=" , st);
 							curbool = false;
 							//System.out.print(result.getString(p1)+"|"+key.get(mapdic(p2))+":");
 							//System.out.println(curbool);
 							break;
+						case ">":
+							in.addtomap(result, p2, result.getString(p1) , ">" , st);
+							curbool = false;
+							break;
+						case "<":
+							in.addtomap(result, p2, result.getString(p1) , ">=" , st);
+							curbool = false;
+							break;
+						case ">=":
+							in.addtomap(result, p2, result.getString(p1) , "<" , st);
+							curbool = false;
+							break;
+						case "<=":
+							in.addtomap(result, p2, result.getString(p1) , "<=" , st);
+							curbool = false;
+							break;
 						}
 					}
 				}
-			}
+//			}
 			else {
 				switch(op) {
-				case '=':
+				case "=":
 					curbool = result.getString(p1).equals(p2.substring(1,p2.length()-1));
 					//System.out.print(result.getString(p1)+"|"+p2.substring(1,p2.length()-1)+":");
 					//System.out.println(curbool);
 					break;
-				case '!':
+				case "!=":
 					curbool = !(result.getString(p1).equals(p2.substring(1,p2.length()-1)));
 					//System.out.print(result.getString(p1)+"|"+p2.substring(1,p2.length()-1)+":");
 					//System.out.println(curbool);

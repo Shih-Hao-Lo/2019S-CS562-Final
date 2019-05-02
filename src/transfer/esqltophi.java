@@ -57,6 +57,10 @@ public class esqltophi {
 				  System.out.println("having0:"+tmp[0]);
 				  System.out.println("having1:"+tmp[1]);
 				  break;
+			  case "where":
+				  output.addtophi("w", tmp[0]+" "+tmp[1]);
+				  System.out.println("where0:"+tmp[0]);
+				  System.out.println("where1:"+tmp[1]);
 			  default:
 				  System.out.println("default0:"+tmp[0]);
 				  System.out.println("default1:"+tmp[1]);

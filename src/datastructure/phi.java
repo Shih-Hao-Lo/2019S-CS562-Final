@@ -17,40 +17,45 @@ public class phi {
 	public ArrayList<String> theta; //such that clause
 	public String G; //having clause
 	public ArrayList<String> V; //List of grouping attributes
+	public String W;//where clause
 	
 	public phi() {
-		S = new ArrayList<>();
-		n = 0;
-		F = new HashSet<>();
-		theta = new ArrayList<>();
-		G = "";
-		V = new ArrayList<>();
+		this.S = new ArrayList<>();
+		this.n = 0;
+		this.F = new HashSet<>();
+		this.theta = new ArrayList<>();
+		this.G = "";
+		this.V = new ArrayList<>();
+		this.W = "";
 	}
 	
 	public void addtophi(String action , String data) {
 		switch(action.toLowerCase()) {
 		case "s":
-			S.addAll(Arrays.asList(removespace(data).split(",")));
+			this.S.addAll(Arrays.asList(removespace(data).split(",")));
 			//System.out.println(S.toString());
 			break;
 		case "t":
-			theta.addAll(Arrays.asList(removespace(data).split(",")));
+			this.theta.addAll(Arrays.asList(removespace(data).split(",")));
 			//System.out.println(theta.toString());
 			break;
 		case "g":
-			G = data;
+			this.G = data;
 			break;
 		case "v":
 			int len = 0;
 			while(data.charAt(len) != ':') len++;
-			V.addAll(Arrays.asList(removespace(data.substring(0, len)).split(",")));
+			this.V.addAll(Arrays.asList(removespace(data.substring(0, len)).split(",")));
 			//System.out.println(V);
 			String[] tmp = removespace(data.substring(len , data.length())).split(",");
-			n = tmp.length;
+			this.n = tmp.length;
 			//System.out.println(n);
 			break;
 		case "f":
-			F.addAll(Arrays.asList(data));
+			this.F.addAll(Arrays.asList(data));
+			break;
+		case "w":
+			this.W = data;
 			break;
 		default:
 		}
@@ -63,7 +68,9 @@ public class phi {
 		System.out.println("theta:"+this.theta);
 		System.out.println("G:"+this.G);
 		System.out.println("V:"+this.V);
+		System.out.println("W:"+this.W);
 	}
+	
 	
 	public String removespace(String in) {
 		String out = "";

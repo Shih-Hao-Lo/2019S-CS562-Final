@@ -63,7 +63,7 @@ public class input {
 		
 		before();
 		//addstatment("System.out.println(\"Hello World!\");");
-		addquery("select * from sales");
+		addquery("select * from sales " + phidata.W);
 		printattribute();
 		addstatment("globalkey = new HashSet<>();");
 		//String[] data = {"for(int i = 1; i <= columnsNumber; i++){" , "System.out.printf(\"%-30.30s\" , resultSet.getString(i));" , "}" , "System.out.println();"};

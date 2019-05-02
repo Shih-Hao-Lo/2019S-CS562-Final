@@ -16,7 +16,7 @@ try{
 Class.forName("org.postgresql.Driver");
 Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres");
 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-ResultSet resultSet = statement.executeQuery("select * from sales");
+ResultSet resultSet = statement.executeQuery("select * from sales where year = 1995");
 ResultSetMetaData rsmd = resultSet.getMetaData();
 int columnsNumber = rsmd.getColumnCount();
 for(int i = 1; i <= columnsNumber; i++){

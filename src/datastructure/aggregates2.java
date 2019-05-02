@@ -30,7 +30,6 @@ public class aggregates2 {
 		for(int x = 0 ; x < group.size() ; x++) {
 			g_attri.add(group.get(x));
 		}
-		System.out.println(r.isBeforeFirst());
 		while(r.next()){
 			ArrayList<String> tmp = new ArrayList<>();
 			for(int x = 0 ; x < group.size() ; x++) {
@@ -42,7 +41,8 @@ public class aggregates2 {
 			this.avg.put(tmp, null);
 			this.count.put(tmp, null);
 		}
-		r.first();
+		//r.first();
+		r.beforeFirst();
 	}
 	
 	public void update(int data , String[] keys) {
@@ -94,10 +94,59 @@ public class aggregates2 {
 			this.avg.replace(key, curavg/curcnt);
 		}
 	}
+	
+	public void update(int data , ArrayList<String> key) {
+		//max
+		if(this.max.get(key) == null) {
+			this.max.replace(key, data);
+		}
+		else {
+			int curmax = this.max.get(key);
+			if(data > curmax) {
+				this.max.replace(key, data);
+			}
+		}
+		//min
+		if(this.min.get(key) == null) {
+			this.min.replace(key, data);
+		}
+		else {
+			int curmin = this.min.get(key);
+			if(data < curmin) {
+				this.min.replace(key, data);
+			}
+		}
+		//sum
+		if(this.sum.get(key) == null) {
+			this.sum.replace(key, data);
+		}
+		else {
+			int cursum = this.sum.get(key);
+			this.sum.replace(key, cursum+data);
+		}
+		//count
+		if(this.count.get(key) == null) {
+			this.count.replace(key, 1);
+		}
+		else {
+			int curcount = this.count.get(key);
+			this.count.replace(key, curcount+1);
+		}
+		//avg
+		if(this.avg.get(key) == null) {
+			this.avg.put(key, (float) data);
+		}
+		else {
+			float curavg = this.sum.get(key);
+			int curcnt = this.count.get(key);
+			this.avg.replace(key, curavg/curcnt);
+		}
+	}
+	
 	public void printresult() {
 		System.out.println("in printresult");
 		for(ArrayList<String> k: this.avg.keySet()) {
-			System.out.println("\nkey" + k.toString());
+			System.out.println("key" + k.toString());
 			System.out.print("max:" + this.max.get(k));
 			System.out.print("|min:" + this.min.get(k));
 			System.out.print("|avg:" + this.avg.get(k));
@@ -113,12 +162,12 @@ public class aggregates2 {
 		return -1;
 	}
 	
-	public void addtomap(ResultSet result , String key , String value) throws SQLException {
+	public void addtomap(ResultSet result , String key , String value , String action , String suchthat) throws SQLException {
 		//this.printresult();
 		int pos = agpos(key);
 		int data = result.getInt("quant");
 		for(ArrayList<String> k : this.max.keySet()) {
-			if(!removespace(k.get(pos)).equals(value)) {
+			if(!k.get(pos).equals(value)) {
 				if(this.max.get(k) == null) {
 					this.max.replace(k, data);
 				}
