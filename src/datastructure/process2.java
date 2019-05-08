@@ -69,9 +69,9 @@ public class process2 {
 				len++;
 			}
 			if(len != p1.length()) p1 = p1.substring(len+1 , p1.length());
-			System.out.print(p1+"|");
-			System.out.print(op+"|");
-			System.out.println(p2);
+			//System.out.print(p1+"|");
+			//System.out.print(op+"|");
+			//System.out.println(p2);
 			if(p2.charAt(0) == '\"') {
 				p2 = p2.substring(1, p2.length()-1);
 				constexp.add(p1+"/"+op+"/"+p2);
