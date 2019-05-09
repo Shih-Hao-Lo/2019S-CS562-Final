@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import datastructure.phi;
+import datastructure.*;
 import transfer.esqltophi;
 
 public class input {
@@ -23,60 +23,102 @@ public class input {
 		phi phidata = esqltophi.fromfile();
 		//phidata.printphi();
 		//System.out.println(processhaving(phidata.G));
-		ArrayList<String> st = new ArrayList<>();
-		ArrayList<String> exp = new ArrayList<>();
-		ArrayList<String> res = new ArrayList<>();
-		exp.add("String[] keys = {resultSet.getString(1)};");//Grouping Attribute Extention
-		exp.add("HashSet<String> tmpset = new HashSet<>();");
-		exp.add("tmpset.addAll(Arrays.asList(keys));");
-		exp.add("globalkey.add(tmpset);");
-		for(int x = 0 ; x < phidata.n ; x++) {
+		///////
+
+		ArrayList<String> a = new ArrayList<>();//cust
+		ArrayList<String> s = new ArrayList<>();//project
+		a.add("ArrayList<String> gb = new ArrayList<>();");
+
+		
+		//Projection
+		for(int x = 0; x < phidata.S.size(); x++) {
 			  int len = 0;
+			  int len1 = 0;
+			  String name = "" ;
+			  String name1 = "";
+			  while(len < phidata.S.get(x).length() && phidata.S.get(x).charAt(len) != '(') {
+				  len++;
+				 
+			  }
+
+			  if(len != phidata.S.get(x).length()) {
+				  name = phidata.S.get(x).substring(0, len);
+				  len1 = len;
+				
+				  while(phidata.S.get(x).charAt(len1) != '.') {
+					  len1++;
+				  }
+				  name1 = phidata.S.get(x).substring(len+1, len1);
+				  System.out.println(name1);//
+			  }else{
+				  name = phidata.S.get(x);
+			  }	  
+			  //name is variable cust!!!, x, y ,z
+			  //name1 is aggregate function
+			  if(len1 != 0) {
+				  s.add(name1 +"."+name);
+			  }else {
+				  s.add(name);
+			  }
+		}
+		
+		
+		
+		for(int x = 0; x < phidata.V.size() ; x++) {
+			a.add("gb.add(\""+phidata.V.get(x)+"\");");
+		}
+	
+		
+		for(int x = 0; x < phidata.theta.size() ; x++) {
+		 	  int len = 0;
 			  while(phidata.theta.get(x).charAt(len) != '.') {
 				  len++;
 			  }
 			  String name = phidata.theta.get(x).substring(0, len);
-			  st.add("aggregates " + name + " = new aggregates();");
-			  String Label = "";
-			  while(phidata.theta.get(x).charAt(len) != '=') {
-				  len++;
-				  Label += phidata.theta.get(x).charAt(len);
+			  a.add("aggregates2 " + name + " = new aggregates2(resultSet, gb);");
+			  
+			  String cond = "" + phidata.theta.get(x);
+			  if(phidata.W.length() != 0) {
+				  cond = cond + "and" + name + "." + removestr(phidata.W);
 			  }
-			  int len2 = 0;
-			  Object[] Farr = phidata.F.toArray();
-			  while(Farr[0].toString().charAt(len2) != '.') {
-				  len2++;
-			  }
-			  String Label2 = Farr[0].toString().substring(len2+1, Farr[0].toString().length()-1);
-			  //System.out.println(Label2);
-			  //System.out.println(Label.substring(0, Label.length()-1));
-			  Label = Label.substring(0, Label.length()-1);
-			  String condition = phidata.theta.get(x).substring(len+1, phidata.theta.get(x).length());
-			  if(condition.charAt(0) != '\"') condition = '\"' + condition;
-			  if(condition.charAt(condition.length()-1) != '\"') condition = condition + '\"';
-			  String[] expression  = {"if(resultSet.getString(\""+ Label +"\").equals(" + condition +")){" , name + ".update(resultSet.getInt(\""+ Label2 +"\") , keys);" , "}"};
-			  exp.addAll(Arrays.asList(expression));
-			  String print =  name+".printresult();";
-			  res.add(print);
-			  res.add("System.out.println(\"------------------------------------------------\");");
+			  a.add("process2.process("+ name +", resultSet, gb,\"" + cond + "\");");
+			  
 		}
 		
+		///////////
 		before();
+		
 		//addstatment("System.out.println(\"Hello World!\");");
-		addquery("select * from sales " + phidata.W);
-		printattribute();
-		addstatment("globalkey = new HashSet<>();");
+		addquery("select * from sales");
+		//printattribute();
+		addstatment("System.out.printf(\"%-20.20s\",\"" + phidata.V.toString() + "\");");
+		for(int x = phidata.V.size(); x < s.size(); x++) {		
+				addstatment("System.out.printf(\"%-20.20s\",\"" + phidata.S.get(x) + "\");");////////////
+			
+		}
+		addstatment("System.out.println();");////////////
 		//String[] data = {"for(int i = 1; i <= columnsNumber; i++){" , "System.out.printf(\"%-30.30s\" , resultSet.getString(i));" , "}" , "System.out.println();"};
-		for(int x = 0 ; x < st.size() ; x++) {
-			addstatment(st.get(x));
+		
+		//Wesley
+
+		for(int x = 0; x < a.size(); x++) {
+			addstatment(a.get(x));
 		}
-		addwhile("resultSet.next()" , "" , exp);
-		for(int x = 0 ; x < res.size() ; x++) {
-			addstatment(res.get(x));
-		}
-		addstatment("for(HashSet<String> k: globalkey) {");
+		
+		
+		addstatment("globalkey = "+ phidata.theta.get(0).substring(0, 1) + ".max.keySet();");
+		
+		addstatment("for(ArrayList<String> k: globalkey) {");
 		addstatment(processhaving(phidata.G));
-		addstatment("System.out.println(k.toString() + \" should output!\");");//project part
+		addstatment("System.out.printf(\"%-20.20s\", k.toString());");////////////
+		for(int x = 0; x < s.size(); x++) {
+			boolean kadded = false;
+			if(s.get(x).contains(".")) {
+				addstatment("System.out.printf(\"%-20.20s\"," + s.get(x) + ".get(k));");////////////
+			}
+		}
+		addstatment("System.out.println();");////////////
+//		addstatment("System.out.println(k.toString() + \" should output!\");");//project part///
 		if(phidata.G.length() != 0) addstatment("}");
 		addstatment("}");
 		after();
@@ -99,11 +141,11 @@ public class input {
 		writer.println("import java.sql.Statement;");
 		writer.println("import java.util.HashMap;");
 		writer.println("import java.util.ArrayList;");
-		writer.println("import java.util.HashSet;");
+		writer.println("import java.util.Set;");
 		writer.println("import java.util.Arrays;");
 		writer.println("import datastructure.*;");
         writer.println("public class output{");
-        writer.println("public static HashSet<HashSet<String>> globalkey;");
+        writer.println("public static Set<ArrayList<String>> globalkey;");
         writer.println("public static void main(String[] args){");
         writer.println("try{");
         writer.println("Class.forName(\"org.postgresql.Driver\");");

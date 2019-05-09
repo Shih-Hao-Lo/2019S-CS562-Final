@@ -8,7 +8,17 @@ public class phi {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		String tmp = "state=\"NJ\"";
+		for(int x = 0 ; x < tmp.length() ; x++) {
+			if(tmp.charAt(x) == '\"') {
+				String tmp1 = tmp.substring(0, x);
+				String tmp2 = tmp.substring(x,tmp.length());
+				tmp1 += "\\";
+				tmp = tmp1 + tmp2;
+				x++;
+			}
+		}
+		System.out.println(tmp);
 	}
 	
 	public ArrayList<String> S; //Select clause
@@ -36,7 +46,17 @@ public class phi {
 			//System.out.println(S.toString());
 			break;
 		case "t":
-			this.theta.addAll(Arrays.asList(removespace(data).split(",")));
+			String tmps = removespace(data);
+			for(int x = 0 ; x < tmps.length() ; x++) {
+				if(tmps.charAt(x) == '\"') {
+					String tmp1 = tmps.substring(0, x);
+					String tmp2 = tmps.substring(x,tmps.length());
+					tmp1 += "\\";
+					tmps = tmp1 + tmp2;
+					x++;
+				}
+			}
+			this.theta.addAll(Arrays.asList(tmps.split(",")));
 			//System.out.println(theta.toString());
 			break;
 		case "g":

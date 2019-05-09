@@ -6,52 +6,41 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.Arrays;
 import datastructure.*;
 public class output{
-public static HashSet<HashSet<String>> globalkey;
+public static Set<ArrayList<String>> globalkey;
 public static void main(String[] args){
 try{
 Class.forName("org.postgresql.Driver");
 Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres");
 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-ResultSet resultSet = statement.executeQuery("select * from sales where year = 1995");
+ResultSet resultSet = statement.executeQuery("select * from sales");
 ResultSetMetaData rsmd = resultSet.getMetaData();
 int columnsNumber = rsmd.getColumnCount();
-for(int i = 1; i <= columnsNumber; i++){
-System.out.printf("%-30.30s" , rsmd.getColumnName(i));
-}
+System.out.printf("%-20.20s","[cust, month]");
+System.out.printf("%-20.20s","sum(x.quant)");
+System.out.printf("%-20.20s","sum(y.quant)");
+System.out.printf("%-20.20s","sum(z.quant)");
 System.out.println();
-globalkey = new HashSet<>();
-aggregates x = new aggregates();
-aggregates y = new aggregates();
-aggregates z = new aggregates();
-while(resultSet.next()) {
-String[] keys = {resultSet.getString(1)};
-HashSet<String> tmpset = new HashSet<>();
-tmpset.addAll(Arrays.asList(keys));
-globalkey.add(tmpset);
-if(resultSet.getString("state").equals("NY")){
-x.update(resultSet.getInt("quant") , keys);
-}
-if(resultSet.getString("state").equals("NJ")){
-y.update(resultSet.getInt("quant") , keys);
-}
-if(resultSet.getString("state").equals("CT")){
-z.update(resultSet.getInt("quant") , keys);
-}
-
-}
-x.printresult();
-System.out.println("------------------------------------------------");
-y.printresult();
-System.out.println("------------------------------------------------");
-z.printresult();
-System.out.println("------------------------------------------------");
-for(HashSet<String> k: globalkey) {
-if(2+x.sum.get(k)>y.sum.get(k)&&x.avg.get(k)>z.avg.get(k)) {
-System.out.println(k.toString() + " should output!");
+ArrayList<String> gb = new ArrayList<>();
+gb.add("cust");
+gb.add("month");
+aggregates2 x = new aggregates2(resultSet, gb);
+process2.process(x, resultSet, gb,"x.state=\"NY\"andx.year=1995");
+aggregates2 y = new aggregates2(resultSet, gb);
+process2.process(y, resultSet, gb,"y.state=\"NJ\"andy.year=1995");
+aggregates2 z = new aggregates2(resultSet, gb);
+process2.process(z, resultSet, gb,"z.state=\"CT\"andz.year=1995");
+globalkey = x.max.keySet();
+for(ArrayList<String> k: globalkey) {
+if(x.sum.get(k)>y.sum.get(k)&&x.avg.get(k)>z.avg.get(k)) {
+System.out.printf("%-20.20s", k.toString());
+System.out.printf("%-20.20s",x.sum.get(k));
+System.out.printf("%-20.20s",y.sum.get(k));
+System.out.printf("%-20.20s",z.sum.get(k));
+System.out.println();
 }
 }
 }

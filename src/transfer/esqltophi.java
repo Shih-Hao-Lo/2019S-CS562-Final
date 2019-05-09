@@ -18,7 +18,7 @@ public class esqltophi {
 	}
 
 	public static phi fromfile() throws IOException {
-		  File file = new File(System.getProperty("user.dir")+"\\src\\esql.txt"); 
+		  File file = new File(System.getProperty("user.dir")+"/src/esql.txt"); 
 		  //System.out.println(System.getProperty("user.dir"));
 		  BufferedReader br = new BufferedReader(new FileReader(file)); 
 		  phi output = new phi();
@@ -58,7 +58,7 @@ public class esqltophi {
 				  System.out.println("having1:"+tmp[1]);
 				  break;
 			  case "where":
-				  output.addtophi("w", tmp[0]+" "+tmp[1]);
+				  output.addtophi("w", tmp[1]);
 				  System.out.println("where0:"+tmp[0]);
 				  System.out.println("where1:"+tmp[1]);
 			  default:

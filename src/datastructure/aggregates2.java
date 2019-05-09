@@ -35,11 +35,11 @@ public class aggregates2 {
 			for(int x = 0 ; x < group.size() ; x++) {
 				tmp.add(r.getString(group.get(x)));
 			}
-			this.max.put(tmp, null);
-			this.min.put(tmp, null);
-			this.sum.put(tmp, null);
-			this.avg.put(tmp, null);
-			this.count.put(tmp, null);
+			this.max.put(tmp, -1);
+			this.min.put(tmp, -1);
+			this.sum.put(tmp, -1);
+			this.avg.put(tmp, (float) -1.0);
+			this.count.put(tmp, -1);
 		}
 		//r.first();
 		r.beforeFirst();
@@ -49,7 +49,7 @@ public class aggregates2 {
 		ArrayList<String> key = new ArrayList<>();
 		key.addAll(Arrays.asList(keys));
 		//max
-		if(this.max.get(key) == null) {
+		if(this.max.get(key) == -1) {
 			this.max.replace(key, data);
 		}
 		else {
@@ -59,7 +59,7 @@ public class aggregates2 {
 			}
 		}
 		//min
-		if(this.min.get(key) == null) {
+		if(this.min.get(key) == -1) {
 			this.min.replace(key, data);
 		}
 		else {
@@ -69,7 +69,7 @@ public class aggregates2 {
 			}
 		}
 		//sum
-		if(this.sum.get(key) == null) {
+		if(this.sum.get(key) == -1) {
 			this.sum.replace(key, data);
 		}
 		else {
@@ -77,7 +77,7 @@ public class aggregates2 {
 			this.sum.replace(key, cursum+data);
 		}
 		//count
-		if(this.count.get(key) == null) {
+		if(this.count.get(key) == -1) {
 			this.count.replace(key, 1);
 		}
 		else {
@@ -85,7 +85,7 @@ public class aggregates2 {
 			this.count.replace(key, curcount+1);
 		}
 		//avg
-		if(this.avg.get(key) == null) {
+		if(this.avg.get(key) == -1) {
 			this.avg.put(key, (float) data);
 		}
 		else {
@@ -97,7 +97,7 @@ public class aggregates2 {
 	
 	public void update(int data , ArrayList<String> key) {
 		//max
-		if(this.max.get(key) == null) {
+		if(this.max.get(key) == -1) {
 			this.max.replace(key, data);
 		}
 		else {
@@ -107,7 +107,7 @@ public class aggregates2 {
 			}
 		}
 		//min
-		if(this.min.get(key) == null) {
+		if(this.min.get(key) == -1) {
 			this.min.replace(key, data);
 		}
 		else {
@@ -117,7 +117,7 @@ public class aggregates2 {
 			}
 		}
 		//sum
-		if(this.sum.get(key) == null) {
+		if(this.sum.get(key) == -1) {
 			this.sum.replace(key, data);
 		}
 		else {
@@ -125,7 +125,7 @@ public class aggregates2 {
 			this.sum.replace(key, cursum+data);
 		}
 		//count
-		if(this.count.get(key) == null) {
+		if(this.count.get(key) == -1) {
 			this.count.replace(key, 1);
 		}
 		else {
@@ -133,7 +133,7 @@ public class aggregates2 {
 			this.count.replace(key, curcount+1);
 		}
 		//avg
-		if(this.avg.get(key) == null) {
+		if(this.avg.get(key) == -1) {
 			this.avg.put(key, (float) data);
 		}
 		else {
@@ -168,7 +168,7 @@ public class aggregates2 {
 		int data = result.getInt("quant");
 		for(ArrayList<String> k : this.max.keySet()) {
 			if(!k.get(pos).equals(value)) {
-				if(this.max.get(k) == null) {
+				if(this.max.get(k) == -1) {
 					this.max.replace(k, data);
 				}
 				else {
@@ -178,7 +178,7 @@ public class aggregates2 {
 					}
 				}
 				//min
-				if(this.min.get(k) == null) {
+				if(this.min.get(k) == -1) {
 					this.min.replace(k, data);
 				}
 				else {
@@ -188,7 +188,7 @@ public class aggregates2 {
 					}
 				}
 				//sum
-				if(this.sum.get(k) == null) {
+				if(this.sum.get(k) == -1) {
 					this.sum.replace(k, data);
 				}
 				else {
@@ -196,7 +196,7 @@ public class aggregates2 {
 					this.sum.replace(k, cursum+data);
 				}
 				//count
-				if(this.count.get(k) == null) {
+				if(this.count.get(k) == -1) {
 					this.count.replace(k, 1);
 				}
 				else {
@@ -204,7 +204,7 @@ public class aggregates2 {
 					this.count.replace(k, curcount+1);
 				}
 				//avg
-				if(this.avg.get(k) == null) {
+				if(this.avg.get(k) == -1) {
 					this.avg.put(k, (float) data);
 				}
 				else {

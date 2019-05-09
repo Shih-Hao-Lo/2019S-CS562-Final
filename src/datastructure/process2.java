@@ -22,13 +22,23 @@ public class process2 {
 		ArrayList<String> gb = new ArrayList<>();
 		dic = new ArrayList<>();
 		gb.add("cust");
-		gb.add("month");
+		//gb.add("month");
 		dic.add("cust");
-		dic.add("month");
-		aggregates2 a = new aggregates2(resultSet , gb);
-		String s1 = "x.cust=\"Sam\"andx.year=\"1995\"";
+		//dic.add("month");
+		
+		
+		String s1 = "x.state=\"NY\"andx.year=1995";
 		String s2 = "x.month<=month";//andx.prod=prod";
-		process(a , resultSet , gb , s2);
+		
+		//for ...
+		aggregates2 a = new aggregates2(resultSet , gb);
+		process(a , resultSet , gb , s1);
+		
+		
+		
+		
+		
+		
 		a.printresult();
 	}
 	
@@ -72,8 +82,8 @@ public class process2 {
 			//System.out.print(p1+"|");
 			//System.out.print(op+"|");
 			//System.out.println(p2);
-			if(p2.charAt(0) == '\"') {
-				p2 = p2.substring(1, p2.length()-1);
+			if(p2.charAt(0) == '\"' || isnumber(p2)) {
+				if(!isnumber(p2))p2 = p2.substring(1, p2.length()-1);
 				constexp.add(p1+"/"+op+"/"+p2);
 			}
 			else {
@@ -82,7 +92,8 @@ public class process2 {
 		}
 		
 		//System.out.println(constexp.toString());
-		printatt(result);
+		//System.out.println(othexp.toString());
+		//printatt(result);
 		
 		while(result.next()) {
 			if(checkconst(constexp , result)) {
@@ -90,6 +101,7 @@ public class process2 {
 				updateto(in , result , group , othexp);
 			}
 		}
+		result.beforeFirst();
 	}
 	
 	public static boolean checkconst(ArrayList<String> c , ResultSet result) throws SQLException {
