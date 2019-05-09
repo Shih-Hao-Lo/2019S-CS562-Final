@@ -80,8 +80,9 @@ public class process2 {
 				othexp.add(p1+"/"+op+"/"+p2);
 			}
 		}
-
-		//printatt(result);
+		
+		//System.out.println(constexp.toString());
+		printatt(result);
 		
 		while(result.next()) {
 			if(checkconst(constexp , result)) {
@@ -99,33 +100,36 @@ public class process2 {
 			String op = cur[1];
 			String p2 = cur[2];
 			String data = result.getString(p1);
+			//System.out.println(data);
 			if(isnumber(data)) {
-				//System.out.println(Integer.valueOf(data));
-				//System.out.println(op);
+				//System.out.print(Integer.valueOf(data));
+				//System.out.print(op);
 				//System.out.println(Integer.valueOf(p2));
+				//System.out.println(Integer.parseInt(data) == Integer.parseInt(p2));
 				switch(op) {
 					case ">":
-						out = out && (Integer.valueOf(data) > Integer.valueOf(p2));
+						out = out && (Integer.parseInt(data) > Integer.parseInt(p2));
 						break;
 					case ">=":
-						out = out && (Integer.valueOf(data) >= Integer.valueOf(p2));
+						out = out && (Integer.parseInt(data) >= Integer.parseInt(p2));
 						break;
 					case "<":
-						out = out && (Integer.valueOf(data) < Integer.valueOf(p2));
+						out = out && (Integer.parseInt(data) < Integer.parseInt(p2));
 						break;
 					case "<=":
-						out = out && (Integer.valueOf(data) <= Integer.valueOf(p2));
+						out = out && (Integer.parseInt(data) <= Integer.parseInt(p2));
 						break;
 					case "=":
-						out = out && (Integer.valueOf(data) == Integer.valueOf(p2));
+						out = out && (Integer.parseInt(data) == Integer.parseInt(p2));
 						break;
 					case "!=":
-						out = out && (Integer.valueOf(data) != Integer.valueOf(p2));
+						out = out && (Integer.parseInt(data) != Integer.parseInt(p2));
 						break;
 					default:
 				}
 			}
 			else {
+				//System.out.println(data.equals(p2));
 				switch(op) {
 					case "=":
 						out = out && (data.equals(p2));
@@ -137,6 +141,7 @@ public class process2 {
 				}
 			
 			}
+			//System.out.println(out);
 		}
 		return out;
 	}
@@ -192,22 +197,22 @@ public class process2 {
 			if(isnumber(curkey.get(idx))) {
 				switch(op) {
 					case ">":
-						out = out && (Integer.valueOf(curkey.get(idx)) > Integer.valueOf(agkey.get(idx)));
+						out = out && (Integer.parseInt(curkey.get(idx)) > Integer.parseInt(agkey.get(idx)));
 						break;
 					case ">=":
-						out = out && (Integer.valueOf(curkey.get(idx)) >= Integer.valueOf(agkey.get(idx)));
+						out = out && (Integer.parseInt(curkey.get(idx)) >= Integer.parseInt(agkey.get(idx)));
 						break;
 					case "<":
-						out = out && (Integer.valueOf(curkey.get(idx)) < Integer.valueOf(agkey.get(idx)));
+						out = out && (Integer.parseInt(curkey.get(idx)) < Integer.parseInt(agkey.get(idx)));
 						break;
 					case "<=":
-						out = out && (Integer.valueOf(curkey.get(idx)) <= Integer.valueOf(agkey.get(idx)));
+						out = out && (Integer.parseInt(curkey.get(idx)) <= Integer.parseInt(agkey.get(idx)));
 						break;
 					case "!=":
-						out = out && (Integer.valueOf(curkey.get(idx)) != Integer.valueOf(agkey.get(idx)));
+						out = out && (Integer.parseInt(curkey.get(idx)) != Integer.parseInt(agkey.get(idx)));
 						break;
 					case "=":
-						out = out && (Integer.valueOf(curkey.get(idx)) == Integer.valueOf(agkey.get(idx)));
+						out = out && (Integer.parseInt(curkey.get(idx)) == Integer.parseInt(agkey.get(idx)));
 						break;
 					default:
 				}
@@ -236,7 +241,7 @@ public class process2 {
 	
 	public static boolean isnumber(String in) {
 		try {
-			Integer result = Integer.valueOf(in);	
+			Integer result = Integer.parseInt(in);	
 			return true;
 		}
 		catch(NumberFormatException e){
