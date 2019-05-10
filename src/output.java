@@ -20,17 +20,17 @@ ResultSet resultSet = statement.executeQuery("select * from sales");
 ResultSetMetaData rsmd = resultSet.getMetaData();
 int columnsNumber = rsmd.getColumnCount();
 System.out.printf("%-10s", "cust");
-System.out.printf("%-10s", "month");
-System.out.printf("%-20.20s","sum(x.quant)");
-System.out.printf("%-20.20s","sum(y.quant)");
+System.out.printf("%-10s", "prod");
+System.out.printf("%-20.20s","avg(x.sale)");
+System.out.printf("%-20.20s","avg(y.sale)");
 System.out.println();
 ArrayList<String> gb = new ArrayList<>();
 gb.add("cust");
-gb.add("month");
+gb.add("prod");
 aggregates2 x = new aggregates2(resultSet, gb);
-process2.process(x, resultSet, gb,"x.month<=monthandx.year=1995");
+process2.process(x, resultSet, gb,"x.cust=custandx.prod=prod");
 aggregates2 y = new aggregates2(resultSet, gb);
-process2.process(y, resultSet, gb,"y.month>=monthandy.year=1995");
+process2.process(y, resultSet, gb,"y.cust!=custandy.prod=prod");
 globalkey = x.max.keySet();
 for(ArrayList<String> k: globalkey) {
 
@@ -46,8 +46,8 @@ System.out.printf("%10s", k.get(1));
 else {
 System.out.printf("%-10s", k.get(1));
 }
-System.out.printf("%20.20s",x.sum.get(k));
-System.out.printf("%20.20s",y.sum.get(k));
+System.out.printf("%20.20s",x.avg.get(k));
+System.out.printf("%20.20s",y.avg.get(k));
 System.out.println();
 }
 }

@@ -64,7 +64,7 @@ public class phi {
 			break;
 		case "v":
 			int len = 0;
-			while(data.charAt(len) != ':') len++;
+			while(data.charAt(len) != ';') len++;
 			this.V.addAll(Arrays.asList(removespace(data.substring(0, len)).split(",")));
 			//System.out.println(V);
 			String[] tmp = removespace(data.substring(len , data.length())).split(",");
