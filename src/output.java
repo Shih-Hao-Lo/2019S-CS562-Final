@@ -19,34 +19,50 @@ Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITI
 ResultSet resultSet = statement.executeQuery("select * from sales");
 ResultSetMetaData rsmd = resultSet.getMetaData();
 int columnsNumber = rsmd.getColumnCount();
-System.out.printf("%-20.20s","[cust, month]");
+System.out.printf("%-10s", "cust");
+System.out.printf("%-10s", "month");
 System.out.printf("%-20.20s","sum(x.quant)");
 System.out.printf("%-20.20s","sum(y.quant)");
-System.out.printf("%-20.20s","sum(z.quant)");
 System.out.println();
 ArrayList<String> gb = new ArrayList<>();
 gb.add("cust");
 gb.add("month");
 aggregates2 x = new aggregates2(resultSet, gb);
-process2.process(x, resultSet, gb,"x.state=\"NY\"andx.year=1995");
+process2.process(x, resultSet, gb,"x.month<=monthandx.year=1995");
 aggregates2 y = new aggregates2(resultSet, gb);
-process2.process(y, resultSet, gb,"y.state=\"NJ\"andy.year=1995");
-aggregates2 z = new aggregates2(resultSet, gb);
-process2.process(z, resultSet, gb,"z.state=\"CT\"andz.year=1995");
+process2.process(y, resultSet, gb,"y.month>=monthandy.year=1995");
 globalkey = x.max.keySet();
 for(ArrayList<String> k: globalkey) {
-if(x.sum.get(k)>y.sum.get(k)&&x.avg.get(k)>z.avg.get(k)) {
-System.out.printf("%-20.20s", k.toString());
-System.out.printf("%-20.20s",x.sum.get(k));
-System.out.printf("%-20.20s",y.sum.get(k));
-System.out.printf("%-20.20s",z.sum.get(k));
-System.out.println();
+
+if(isnumber(k.get(0))) {
+System.out.printf("%10s", k.get(0));
 }
+else {
+System.out.printf("%-10s", k.get(0));
+}
+if(isnumber(k.get(1))) {
+System.out.printf("%10s", k.get(1));
+}
+else {
+System.out.printf("%-10s", k.get(1));
+}
+System.out.printf("%20.20s",x.sum.get(k));
+System.out.printf("%20.20s",y.sum.get(k));
+System.out.println();
 }
 }
 catch (SQLException | ClassNotFoundException e) {
 System.out.println("Connection failure.");
 e.printStackTrace();
+}
+}
+public static boolean isnumber(String in) {
+try {
+Integer result = Integer.parseInt(in);
+return true;
+}
+catch(NumberFormatException e){
+return false;
 }
 }
 }

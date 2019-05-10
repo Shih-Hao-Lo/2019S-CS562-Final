@@ -13,6 +13,13 @@ public class process2 {
 	public static ArrayList<String> dic;
 	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 		// TODO Auto-generated method stub
+		String[] cur = {"x.month+100"};
+		int len = 0;
+		while(cur[0].charAt(len) != '+' && cur[0].charAt(len) != '-' && cur[0].charAt(len) != '*' && cur[0].charAt(len) != '/') {
+			len++;
+		}
+		System.out.println(cur[0].substring(len,len+1));
+		System.out.println(cur[0].substring(len+1, cur[0].length()));
 		Class.forName("org.postgresql.Driver");
 		Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres");
 		Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
@@ -22,17 +29,17 @@ public class process2 {
 		ArrayList<String> gb = new ArrayList<>();
 		dic = new ArrayList<>();
 		gb.add("cust");
-		//gb.add("month");
+		gb.add("month");
 		dic.add("cust");
-		//dic.add("month");
+		dic.add("month");
 		
 		
 		String s1 = "x.state=\"NY\"andx.year=1995";
-		String s2 = "x.month<=month";//andx.prod=prod";
+		String s2 = "x.month=month+1";//andx.prod=prod";
 		
 		//for ...
 		aggregates2 a = new aggregates2(resultSet , gb);
-		process(a , resultSet , gb , s1);
+		process(a , resultSet , gb , s2);
 		
 		
 		
@@ -204,27 +211,46 @@ public class process2 {
 		boolean out = true;
 		for(String s: cond.keySet()) {
 			int idx = inlistidx(gb , s);
+			//System.out.println(cond.get(s).toString());
 			String[] cur = cond.get(s).get(0).split("/");
 			String op = cur[1];
+			ArrayList<String> opp1 = new ArrayList<>();
+			ArrayList<String> opp2 = new ArrayList<>();
+			int len = 0;
+			while(len < cur[0].length() && cur[0].charAt(len) != '+' && cur[0].charAt(len) != '-' && cur[0].charAt(len) != '*' && cur[0].charAt(len) != '/') {
+				len++;
+			}
+			if(len != cur[0].length()) {
+				opp1.add(cur[0].substring(len,len+1));
+				opp1.add(cur[0].substring(len, cur[0].length()));	
+			}
+			len = 0;
+			while(len < cur[2].length() && cur[2].charAt(len) != '+' && cur[2].charAt(len) != '-' && cur[2].charAt(len) != '*' && cur[2].charAt(len) != '/') {
+				len++;
+			}
+			if(len != cur[2].length()) {
+				opp2.add(cur[2].substring(len,len+1));
+				opp2.add(cur[2].substring(len, cur[2].length()));	
+			}
 			if(isnumber(curkey.get(idx))) {
 				switch(op) {
 					case ">":
-						out = out && (Integer.parseInt(curkey.get(idx)) > Integer.parseInt(agkey.get(idx)));
+						out = out && (processexp(Integer.parseInt(curkey.get(idx)),opp1) > processexp(Integer.parseInt(agkey.get(idx)),opp2));
 						break;
 					case ">=":
-						out = out && (Integer.parseInt(curkey.get(idx)) >= Integer.parseInt(agkey.get(idx)));
+						out = out && (processexp(Integer.parseInt(curkey.get(idx)),opp1) >= processexp(Integer.parseInt(agkey.get(idx)),opp2));
 						break;
 					case "<":
-						out = out && (Integer.parseInt(curkey.get(idx)) < Integer.parseInt(agkey.get(idx)));
+						out = out && (processexp(Integer.parseInt(curkey.get(idx)),opp1) < processexp(Integer.parseInt(agkey.get(idx)),opp2));
 						break;
 					case "<=":
-						out = out && (Integer.parseInt(curkey.get(idx)) <= Integer.parseInt(agkey.get(idx)));
+						out = out && (processexp(Integer.parseInt(curkey.get(idx)),opp1) <= processexp(Integer.parseInt(agkey.get(idx)),opp2));
 						break;
 					case "!=":
-						out = out && (Integer.parseInt(curkey.get(idx)) != Integer.parseInt(agkey.get(idx)));
+						out = out && (processexp(Integer.parseInt(curkey.get(idx)),opp1) != processexp(Integer.parseInt(agkey.get(idx)),opp2));
 						break;
 					case "=":
-						out = out && (Integer.parseInt(curkey.get(idx)) == Integer.parseInt(agkey.get(idx)));
+						out = out && (processexp(Integer.parseInt(curkey.get(idx)),opp1) == processexp(Integer.parseInt(agkey.get(idx)),opp2));
 						break;
 					default:
 				}
@@ -249,6 +275,27 @@ public class process2 {
 			if(list.get(x).equals(target)) return x;
 		}
 		return -1;
+	}
+	
+	public static int processexp(int in , ArrayList<String> operations) {
+		if(operations.size() == 0) return in;
+		String p1 = operations.get(0);
+		String p2 = operations.get(1);
+		switch(p1) {
+			case"+":
+				in = in + Integer.parseInt(p2);
+				break;
+			case"-":
+				in = in - Integer.parseInt(p2);
+				break;
+			case"*":
+				in = in * Integer.parseInt(p2);
+				break;
+			case"/":
+				in = in / Integer.parseInt(p2);
+				break;
+		}
+		return in;
 	}
 	
 	public static boolean isnumber(String in) {

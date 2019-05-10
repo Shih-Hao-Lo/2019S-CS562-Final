@@ -19,16 +19,11 @@ public class input {
 
 	public static void main(String[] args) throws IOException {
 		writer = new PrintWriter("src/output.java", "UTF-8");
-		
 		phi phidata = esqltophi.fromfile();
-		//phidata.printphi();
-		//System.out.println(processhaving(phidata.G));
-		///////
 
 		ArrayList<String> a = new ArrayList<>();//cust
 		ArrayList<String> s = new ArrayList<>();//project
 		a.add("ArrayList<String> gb = new ArrayList<>();");
-
 		
 		//Projection
 		for(int x = 0; x < phidata.S.size(); x++) {
@@ -53,8 +48,6 @@ public class input {
 			  }else{
 				  name = phidata.S.get(x);
 			  }	  
-			  //name is variable cust!!!, x, y ,z
-			  //name1 is aggregate function
 			  if(len1 != 0) {
 				  s.add(name1 +"."+name);
 			  }else {
@@ -62,13 +55,10 @@ public class input {
 			  }
 		}
 		
-		
-		
 		for(int x = 0; x < phidata.V.size() ; x++) {
 			a.add("gb.add(\""+phidata.V.get(x)+"\");");
 		}
 	
-		
 		for(int x = 0; x < phidata.theta.size() ; x++) {
 		 	  int len = 0;
 			  while(phidata.theta.get(x).charAt(len) != '.') {
@@ -84,41 +74,38 @@ public class input {
 			  a.add("process2.process("+ name +", resultSet, gb,\"" + cond + "\");");
 			  
 		}
-		
-		///////////
 		before();
-		
-		//addstatment("System.out.println(\"Hello World!\");");
 		addquery("select * from sales");
 		//printattribute();
-		addstatment("System.out.printf(\"%-20.20s\",\"" + phidata.V.toString() + "\");");
-		for(int x = phidata.V.size(); x < s.size(); x++) {		
-				addstatment("System.out.printf(\"%-20.20s\",\"" + phidata.S.get(x) + "\");");////////////
-			
+		for(int x = 0 ; x < phidata.V.size() ; x++) {
+			addstatment("System.out.printf(\"%-10s\", \"" + phidata.V.get(x) + "\");");
 		}
-		addstatment("System.out.println();");////////////
-		//String[] data = {"for(int i = 1; i <= columnsNumber; i++){" , "System.out.printf(\"%-30.30s\" , resultSet.getString(i));" , "}" , "System.out.println();"};
-		
-		//Wesley
-
+		for(int x = phidata.V.size(); x < s.size(); x++) {		
+				addstatment("System.out.printf(\"%-20.20s\",\"" + phidata.S.get(x) + "\");");
+		}
+		addstatment("System.out.println();");
 		for(int x = 0; x < a.size(); x++) {
 			addstatment(a.get(x));
 		}
-		
-		
 		addstatment("globalkey = "+ phidata.theta.get(0).substring(0, 1) + ".max.keySet();");
-		
 		addstatment("for(ArrayList<String> k: globalkey) {");
 		addstatment(processhaving(phidata.G));
-		addstatment("System.out.printf(\"%-20.20s\", k.toString());");////////////
+		//addstatment("System.out.printf(\"%-10.20s\", k.toString());");
+		for(int x = 0 ; x < phidata.V.size() ; x++) {
+			addstatment("if(isnumber(k.get("+x+"))) {");
+			addstatment("System.out.printf(\"%10s\", k.get(" + x + "));");
+			addstatment("}");
+			addstatment("else {");
+			addstatment("System.out.printf(\"%-10s\", k.get(" + x + "));");
+			addstatment("}");
+		}
 		for(int x = 0; x < s.size(); x++) {
 			boolean kadded = false;
 			if(s.get(x).contains(".")) {
-				addstatment("System.out.printf(\"%-20.20s\"," + s.get(x) + ".get(k));");////////////
+				addstatment("System.out.printf(\"%20.20s\"," + s.get(x) + ".get(k));");
 			}
 		}
-		addstatment("System.out.println();");////////////
-//		addstatment("System.out.println(k.toString() + \" should output!\");");//project part///
+		addstatment("System.out.println();");
 		if(phidata.G.length() != 0) addstatment("}");
 		addstatment("}");
 		after();
@@ -158,7 +145,16 @@ public class input {
     	writer.println("System.out.println(\"Connection failure.\");");
     	writer.println("e.printStackTrace();");
     	writer.println("}");
-        writer.println("}");
+    	writer.println("}");
+    	writer.println("public static boolean isnumber(String in) {");
+    	writer.println("try {");
+    	writer.println("Integer result = Integer.parseInt(in);");
+    	writer.println("return true;");
+    	writer.println("}");
+    	writer.println("catch(NumberFormatException e){");
+    	writer.println("return false;");
+    	writer.println("}");
+    	writer.println("}");
         writer.println("}");
         writer.close();
     }
@@ -171,52 +167,6 @@ public class input {
     	writer.println("ResultSet resultSet = statement.executeQuery(\"" + query + "\");");
     	writer.println("ResultSetMetaData rsmd = resultSet.getMetaData();");
     	writer.println("int columnsNumber = rsmd.getColumnCount();");
-    }
-    
-    public static void addwhile(String loopcounter , String counterchange , ArrayList<String> exec) {
-    	writer.println("while("+loopcounter+") {");
-    	for(int x = 0 ; x < exec.size() ; x++) {
-    		writer.println(exec.get(x));
-    	}
-    	writer.println(counterchange);
-    	writer.println("}");
-    }
-    
-    public static void addfor(String startcondition , String endcondition , String counterchange , String[] exec) {
-    	writer.println("for(" + startcondition +" ; " + endcondition + " ; " + counterchange + "){");
-    	for(int x = 0 ; x < exec.length ; x++) {
-    		writer.println(exec[x]);
-    	}
-    	writer.println("}");
-    }
-    
-    public static void addhashmap(String name) {
-    	writer.println("HashMap<ArrayList<String> , Integer> " + name + " = new HashMap<>();");
-    }
-    
-    public static void existedmap(String name , String key , String value , String action) {
-    	switch(action) {
-    		case "put":
-    			writer.println(name + ".put(" + key + "," + value + ");");
-    		break;
-    		case "rem":
-    			writer.println(name + ".remove(" + key + ");");
-    		break;
-    		case "rep":
-    			writer.println(name + ".replace(" + key + "," + value + ");");
-    		break;
-    		default:
-    	}
-    }
-    
-    public static void traviseHashMap(String name , String[] exec) {
-    	writer.println("for(ArrayList<String> name: " + name + ".keySet()) {");
-    	writer.println("String key = name.toString();");
-    	writer.println("int value = " + name + ".get(name);"); 
-    	for(int x = 0 ; x < exec.length ; x++) {
-    		writer.println(exec[x]);
-    	}
-        writer.println("}");
     }
     
     public static void printattribute() {
@@ -308,6 +258,7 @@ public class input {
     	return out;
     }
     
+    //remove space
 	public static String removestr(String in) {
 		String out = "";
 		for(int x = 0 ; x < in.length() ; x++) {
@@ -317,6 +268,7 @@ public class input {
 		return out;
 	}
 	
+	//split according to and, or
 	public static String[] split2(String in) {
 		ArrayList<String> out = new ArrayList<>();
 		int seg = 0;
