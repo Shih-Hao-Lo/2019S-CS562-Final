@@ -1,4 +1,5 @@
-select cust, prod, avg(x.sale), avg(y.sale)
+select cust,month, sum(x.quant), sum(y.quant),count(y.quant),avg(y.quant)
 from sales
-group by cust, prod ; x, y
-such that x.cust=cust and x.prod=prod,y.cust!=cust and y.prod=prod
+where year = 1995
+Group by cust,month; x, y
+such that x.month <= month , y.month >= month

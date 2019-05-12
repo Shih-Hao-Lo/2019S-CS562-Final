@@ -44,7 +44,7 @@ public class input {
 					  len1++;
 				  }
 				  name1 = phidata.S.get(x).substring(len+1, len1);
-				  System.out.println(name1);//
+				  //System.out.println(name1);//
 			  }else{
 				  name = phidata.S.get(x);
 			  }	  

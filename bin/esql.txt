@@ -1,6 +1,5 @@
-select cust, sum(x.quant), sum(y.quant), sum(z.quant)
+select cust,month, sum(x.quant), sum(y.quant),count(y.quant),avg(y.quant)
 from sales
 where year = 1995
-Group by cust: x, y, z
-such that x.state = "NY" , y.state = "NJ" , z.state = "CT" 
-having 2+sum(x.quant) > sum(y.quant) and avg(x.quant) > avg(z.quant)
+Group by cust,month; x, y
+such that x.month <= month , y.month >= month

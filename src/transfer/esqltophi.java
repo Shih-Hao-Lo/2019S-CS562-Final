@@ -39,31 +39,31 @@ public class esqltophi {
 			  switch(tmp[0].toLowerCase()) {
 			  case "select":
 				  output.addtophi("s", tmp[1]);
-				  System.out.println("select0:"+tmp[0]);
-				  System.out.println("select1:"+tmp[1]);
+				  //System.out.println("select0:"+tmp[0]);
+				  //System.out.println("select1:"+tmp[1]);
 				  break;
 			  case "group":
 				  output.addtophi("v", tmp[1].substring(3, tmp[1].length()));
-				  System.out.println("group0:"+tmp[0]);
-				  System.out.println("group1:"+tmp[1].substring(3, tmp[1].length()));
+				  //System.out.println("group0:"+tmp[0]);
+				  //System.out.println("group1:"+tmp[1].substring(3, tmp[1].length()));
 				  break;
 			  case"such":
 				  output.addtophi("t", tmp[1].substring(5, tmp[1].length()));
-				  System.out.println("sucht0:"+tmp[0]);
-				  System.out.println("sucht1:"+tmp[1].substring(5, tmp[1].length()));
+				  //System.out.println("sucht0:"+tmp[0]);
+				  //System.out.println("sucht1:"+tmp[1].substring(5, tmp[1].length()));
 				  break;
 			  case"having":
 				  output.addtophi("g", tmp[1]);
-				  System.out.println("having0:"+tmp[0]);
-				  System.out.println("having1:"+tmp[1]);
+				  //System.out.println("having0:"+tmp[0]);
+				  //System.out.println("having1:"+tmp[1]);
 				  break;
 			  case "where":
 				  output.addtophi("w", tmp[1]);
-				  System.out.println("where0:"+tmp[0]);
-				  System.out.println("where1:"+tmp[1]);
+				  //System.out.println("where0:"+tmp[0]);
+				  //System.out.println("where1:"+tmp[1]);
 			  default:
-				  System.out.println("default0:"+tmp[0]);
-				  System.out.println("default1:"+tmp[1]);
+				  //System.out.println("default0:"+tmp[0]);
+				  //System.out.println("default1:"+tmp[1]);
 			  }
 			  String[] aggregate = tmp[1].split(" ");
 			  for(int x = 0 ; x < aggregate.length ; x++) {
